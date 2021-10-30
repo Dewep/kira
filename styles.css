@@ -1,0 +1,71 @@
+@font-face {
+  font-family: 'IndieFlower';
+  src: url('IndieFlower-Regular.ttf');
+}
+
+html {
+  font-size: 18px;
+  font-family: 'Indie Flower', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body, #app {
+  min-width: 320px;
+  background: #353535;
+  margin: 0;
+  color: #fae5e8;
+}
+
+body {
+  padding: 20px;
+}
+
+h2 {
+  font-size: 50px;
+  margin: 10px 0;
+}
+
+img {
+  width: 100%;
+  border-radius: 5px;
+}
+a {
+  cursor: pointer;
+}
+p {
+  margin: 0;
+}
+
+.house-cameras::after {
+  content: ' ';
+  display: block;
+  clear: both;
+}
+.house-camera {
+  width: 31.33%;
+  margin: 1%;
+  float: left;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  opacity: .7;
+}
+.house-camera:hover, .house-camera:active, .house-camera:focus {
+  opacity: 1;
+}
+.house-camera h3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  font-size: 20px;
+  margin: 0;
+  pointer-events: none;
+  text-shadow: 0 0 5px #000;
+}
+
+/* @media screen and (max-width: 840px) {
+  html {
+    font-size: 20px;
+  }
+} */
