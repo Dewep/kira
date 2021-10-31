@@ -121,7 +121,7 @@ webServer.post('/invitation/', async transaction => {
   const { houseSlug, name, expirationMinute } = transaction.body
 
   if (!availableHouseSlugs.includes(houseSlug) || !transaction.houses[houseSlug] || !transaction.houses[houseSlug].isAdmin) {
-    return transaction.json({ error: 'You are not admin of this house' }, 403)
+    return transaction.json({ error: 'You are not admin of this house.' }, 403)
   }
 
   const code = generateInvitationCode({
@@ -132,6 +132,25 @@ webServer.post('/invitation/', async transaction => {
   })
 
   return transaction.json({ code })
+})
+
+webServer.post('/snapshot/', async transaction => {
+  const { houseSlug, cameraSlug } = transaction.body
+
+  if (!availableHouseSlugs.includes(houseSlug) || !transaction.houses[houseSlug]) {
+    return transaction.json({ error: 'You are not member of this house.' }, 403)
+  }
+  
+  const house = config.houses[houseSlug]
+  const houseUser = transaction.houses[houseSlug]
+  
+  if (!Object.keys(house.cameras).includes(cameraSlug)) {
+    return transaction.json({ error: 'This camera doesnt exist in this house.' }, 404)
+  }
+
+  const camera = house.cameras[cameraSlug]
+
+  return transaction.json({ wip: true })
 })
 
 const staticFile = (filename, contentType) => {
