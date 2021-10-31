@@ -9,10 +9,10 @@
     <meta name="viewport" content="user-scalable=no,initial-scale=1,minimum-scale=1,width=device-width,height=device-height,viewport-fit=cover">
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body>
+  <body class="initializing">
     <div id="app">
       <div class="houses">
-        <div v-for="house in houses" :key="house.name" class="house">
+        <div v-for="house in houses" :key="house.slug" class="house">
           <h2>{{ house.name }}</h2>
           <div class="house-cameras">
             <a v-for="cam in house.cameras" :key="cam.slug" class="house-camera">
@@ -21,19 +21,29 @@
             </a>
           </div>
           <template v-if="house.isAdmin">
-            <p class="house-logs">
+            <p class="house-logs" @click.prevent="invitation.opened = !invitation.opened">
               Last access:
               <span v-for="(log, logIndex) in house.logs" :key="logIndex"><template v-if="logIndex">, </template>{{ log.user }} ({{ log.date }})</span>
             </p>
-            <div>
-              New invitation for:
-              <input type="text" placeholder="User name">
-              Access granted until:
-              <input type="datetime-local">
-              <input type="submit" value="Create">
+            <div v-if="invitation.opened" class="invitation-house">
+              New invitation:
+              <input v-model="invitation.name" type="text" placeholder="User name">
+              <button class="select first" :class="{ selected: invitation.expiration === 10 }" @click.prevent="invitation.expiration = 10">10 min</button>
+              <button class="select" :class="{ selected: invitation.expiration === 60 }" @click.prevent="invitation.expiration = 60">1 hour</button>
+              <button class="select" :class="{ selected: invitation.expiration === 720 }" @click.prevent="invitation.expiration = 720">12 hours</button>
+              <button class="select last" :class="{ selected: invitation.expiration === 1440 }" @click.prevent="invitation.expiration = 1440">1 day</button>
+              <button @click.prevent="invite(house.slug)">Create invitation</button>
             </div>
+            <p v-if="invitation.code">
+              Invitation code: <code>{{ invitation.code }}</code>
+            </p>
           </template>
         </div>
+      </div>
+      <div class="join-house">
+        <h2>Join new house</h2>
+        <input v-model="code" type="text" placeholder="House invitation code">
+        <button @click.prevent="load()">Join</button>
       </div>
     </div>
 

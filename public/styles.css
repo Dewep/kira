@@ -1,27 +1,32 @@
 @font-face {
-  font-family: 'IndieFlower';
+  font-family: 'Indie Flower';
   src: url('IndieFlower-Regular.ttf');
 }
 
 html {
   font-size: 18px;
-  font-family: 'Indie Flower', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Indie Flower', Verdana, sans-serif;
 }
 
 html, body, #app {
   min-width: 320px;
-  background: #353535;
+  background: #23272e;
   margin: 0;
-  color: #fae5e8;
+  color: #adbac7;
 }
 
 body {
   padding: 20px;
 }
 
+body.initializing #app {
+  opacity: 0;
+}
+
 h2 {
   font-size: 50px;
-  margin: 10px 0;
+  margin: 20px 0 10px;
+  color: #539bf5;
 }
 
 img {
@@ -35,6 +40,44 @@ p {
   margin: 0;
 }
 
+input[type="text"] {
+  background: #22272e;
+  color: #adbac7;
+  border: 1px solid #444c56;
+  vertical-align: middle;
+  padding: 5px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: Verdana, sans-serif;
+}
+input[type="text"]:hover, input[type="text"]:active, input[type="text"]:focus {
+  border-color: #768390;
+}
+button {
+  font-family: Verdana, sans-serif;
+  background: #373e47;
+  color: #adbac7;
+  border: 1px solid #cdd9e51a;
+  vertical-align: middle;
+  padding: 5px 12px;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #444c56;
+  border-color: #768390;
+  transition-duration: .1s;
+}
+
+.house {
+  margin-bottom: 50px;
+}
 .house-cameras::after {
   content: ' ';
   display: block;
@@ -62,6 +105,35 @@ p {
   margin: 0;
   pointer-events: none;
   text-shadow: 0 0 5px #000;
+}
+
+.invitation-house .select {
+  font-weight: normal;
+  border-radius: 0;
+  padding: 5px 8px;
+}
+.invitation-house .select.first {
+  border-radius: 6px 0 0 6px;
+  margin-left: 10px;
+}
+.invitation-house .select.last {
+  border-radius: 0 6px 6px 0;
+  margin-right: 10px;
+}
+.invitation-house .select.selected {
+  font-weight: bold;
+  background-color: #444c56;
+  border-color: #768390;
+}
+
+.join-house input[type="text"] {
+  border-radius: 6px 0 0 6px;
+  width: 80vh;
+  max-width: 200px;
+  border-right: 0;
+}
+.join-house button {
+  border-radius: 0 6px 6px 0;
 }
 
 /* @media screen and (max-width: 840px) {
