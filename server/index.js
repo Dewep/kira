@@ -1,14 +1,47 @@
 const webServer = require('./web-server')
 const path = require('path')
 const fs = require('fs')
+const apiKey = require('./apikey')
 
 webServer.middleware(async function (transaction) {
-  transaction.houses = ['kira']
-  transaction.admins = ['kira']
+  transaction.houses = []
+  transaction.admins = []
+
+  transaction.apiKeys = (transaction.request.headers['authorization'] || '')
+    .split('.')
+    .filter(secret => {
+      try {
+        const { data } = apiKey.decrypt(secret)
+        if (!data.h) {
+          return false
+        }
+        if (!transaction.houses.includes(data.h)) {
+          transaction.houses.push(data.h)
+        }
+        if (data.a && !transaction.houses.includes(data.h)) {
+          transaction.admins.push(data.h)
+        }
+        return true
+      } catch (err) {
+        return false
+      }
+    })
 })
 
-webServer.get('/api/', async transaction => {
-  return transaction.json({})
+webServer.post('/auth/', async transaction => {
+  if (transaction.body.code === 'kira') {
+    const secret = apiKey.encrypt({ h: 'kira', a: 1 }, new Date().getTime() + 30 * 1000)
+    transaction.apiKeys.push(secret)
+    transaction.houses.push('kira')
+    transaction.admins.push('kira')
+  }
+
+  const result = {
+    authorization: transaction.apiKeys.join('.'),
+    houses: transaction.houses
+  }
+
+  return transaction.json(result)
 })
 
 const staticFile = (filename, contentType) => {
