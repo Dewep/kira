@@ -11,14 +11,14 @@
   </head>
   <body class="initializing">
     <div id="app">
-      <div v-if="activeCamera" class="active-camera" @click.prevent="activeCamera = null">
+      <div v-if="activeCamera" ref="activeCamera" class="active-camera" @click.prevent="setActiveCamera(null)">
         <img :src="snapshots[activeCamera] || 'offline.png'">
       </div>
       <div v-if="!activeCamera" class="houses">
         <div v-for="house in houses" :key="house.slug" class="house">
           <h2>{{ house.name }}</h2>
           <div class="house-cameras">
-            <a v-for="cam in house.cameras" :key="cam.slug" class="house-camera" @click.prevent="activeCamera = house.slug + '.' + cam.slug">
+            <a v-for="cam in house.cameras" :key="cam.slug" class="house-camera" @click.prevent="setActiveCamera(house.slug + '.' + cam.slug)">
               <h3>{{ cam.name }}</h3>
               <img :src="snapshots[house.slug + '.' + cam.slug] || 'offline.png'">
             </a>
@@ -30,11 +30,14 @@
             </p>
             <div v-if="invitation.opened" class="invitation-house">
               New invitation:
+              <div class="show-mobile"></div>
               <input v-model="invitation.name" type="text" placeholder="User name">
+              <div class="show-mobile"></div>
               <button class="select first" :class="{ selected: invitation.expiration === 10 }" @click.prevent="invitation.expiration = 10">10 min</button>
               <button class="select" :class="{ selected: invitation.expiration === 60 }" @click.prevent="invitation.expiration = 60">1 hour</button>
               <button class="select" :class="{ selected: invitation.expiration === 720 }" @click.prevent="invitation.expiration = 720">12 hours</button>
               <button class="select last" :class="{ selected: invitation.expiration === 1440 }" @click.prevent="invitation.expiration = 1440">1 day</button>
+              <div class="show-mobile"></div>
               <button @click.prevent="invite(house.slug)">Create invitation</button>
             </div>
             <p v-if="invitation.code">

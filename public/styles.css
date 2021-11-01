@@ -78,6 +78,15 @@ button:hover {
   transition-duration: .1s;
 }
 
+.show-mobile {
+  display: none;
+}
+@media screen and (max-width: 860px) {
+  .show-mobile {
+    display: block;
+  }
+}
+
 .house {
   margin-bottom: 50px;
 }
@@ -94,6 +103,17 @@ button:hover {
   overflow: hidden;
   display: block;
   opacity: .7;
+}
+@media screen and (max-width: 1280px) {
+  .house-camera {
+    width: 48%;
+  }
+}
+@media screen and (max-width: 840px) {
+  .house-camera {
+    width: 96%;
+    margin: 2%;
+  }
 }
 .house-camera:hover, .house-camera:active, .house-camera:focus {
   opacity: 1;
@@ -114,6 +134,7 @@ button:hover {
   font-weight: normal;
   border-radius: 0;
   padding: 5px 8px;
+  margin: 5px 0;
 }
 .invitation-house .select.first {
   border-radius: 6px 0 0 6px;
@@ -127,6 +148,11 @@ button:hover {
   font-weight: bold;
   background-color: #444c56;
   border-color: #768390;
+}
+@media screen and (max-width: 860px) {
+  .invitation-house .select.first {
+    margin-left: 0;
+  }
 }
 
 .join-house input[type="text"] {
@@ -150,9 +176,3 @@ button:hover {
   margin-bottom: 10px;
   cursor: pointer;
 }
-
-/* @media screen and (max-width: 840px) {
-  html {
-    font-size: 20px;
-  }
-} */

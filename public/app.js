@@ -69,6 +69,20 @@ window.AppDefinition = {
       this.invitation.opened = false
     },
 
+    async setActiveCamera (slug) {
+      this.activeCamera = slug
+
+      try {
+        if (!slug) {
+          document.exitFullscreen()
+        } else {
+          await document.body.requestFullscreen()
+        }
+      } catch (err) {
+        console.warn('Fullscreen', err.message)
+      }
+    },
+
     async refreshSnapshots () {
       for (const house of this.houses) {
         for (const camera of house.cameras) {
