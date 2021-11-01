@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const apiKey = require('./apikey')
 const config = require('./config')
+const { getSnapshot } = require('./snapshots')
 
 const availableHouseSlugs = Object.keys(config.houses)
 
@@ -150,7 +151,16 @@ webServer.post('/snapshot/', async transaction => {
 
   const camera = house.cameras[cameraSlug]
 
-  return transaction.json({ wip: true })
+  const snapshot = await getSnapshot(houseSlug, cameraSlug, camera)
+
+  if (!snapshot) {
+    return transaction.json({ error: 'Camera is not available.' }, 503)
+  }
+
+  transaction.response.writeHead(200, { 'Content-Type': 'image/jpeg' })
+  transaction.response.end(snapshot)
+
+  return true
 })
 
 const staticFile = (filename, contentType) => {
