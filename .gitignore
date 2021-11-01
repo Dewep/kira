@@ -1,5 +1,7 @@
 # Kira project
 server/config.js
+timelaps/
+fake-esp32-cam/*.jpg
 
 # Logs
 logs
