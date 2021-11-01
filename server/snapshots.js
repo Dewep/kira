@@ -6,13 +6,14 @@ const snapshotsCache = {}
 async function _downloadSnapshot (camera) {
   // TODO: add timeout
   return new Promise(resolve => {
-    http.get(camera.snapshot, response => {
+    http.get(camera.snapshot, { timeout: 1000 }, response => {
       const chunks = []
       response.on('data', chunk => {
         chunks.push(chunk)
       })
       response.on('end', () => {
-        resolve(Buffer.concat(chunks))
+        const buffer = Buffer.concat(chunks)
+        resolve(buffer.length < 1000 ? null : buffer)
       })
     }).on('error', err => {
       console.error('Snapshot.download.error', err)
