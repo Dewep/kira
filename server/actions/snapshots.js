@@ -44,10 +44,10 @@ async function _downloadSnapshot (camera) {
   return null
 }
 
-async function getSnapshot (houseSlug, cameraSlug, camera) {
+async function getSnapshot (houseSlug, cameraSlug, camera, cache = true) {
   const slug = houseSlug + '.' + cameraSlug
 
-  if (!snapshotsCache[slug]) {
+  if (!cache || !snapshotsCache[slug]) {
     snapshotsCache[slug] = _downloadSnapshot(camera)
 
     snapshotsCache[slug].then(() => {
@@ -62,7 +62,7 @@ async function getSnapshot (houseSlug, cameraSlug, camera) {
 
 module.exports = function snapshotsMiddleware (webServer) {
   webServer.post('/snapshot/', async transaction => {
-    const { houseSlug, cameraSlug } = transaction.body
+    const { houseSlug, cameraSlug, cache } = transaction.body
   
     if (!availableHouseSlugs.includes(houseSlug) || !transaction.houses[houseSlug]) {
       return transaction.json({ error: 'You are not member of this house.' }, 403)
@@ -76,7 +76,7 @@ module.exports = function snapshotsMiddleware (webServer) {
   
     const camera = house.cameras[cameraSlug]
   
-    const snapshot = await getSnapshot(houseSlug, cameraSlug, camera)
+    const snapshot = await getSnapshot(houseSlug, cameraSlug, camera, cache !== false)
   
     if (!snapshot) {
       return transaction.json({ error: 'Camera is not available.' }, 503)
