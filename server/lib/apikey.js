@@ -1,4 +1,4 @@
-const config = require('./config')
+const config = require('../config')
 const crypto = require('crypto')
 
 const resizedIV = Buffer.allocUnsafe(16)

@@ -1,6 +1,7 @@
-const config = require('./config')
+const config = require('../config')
 const http = require('http')
 
+const availableHouseSlugs = Object.keys(config.houses)
 const snapshotsCache = {}
 
 async function _get (url) {
@@ -59,4 +60,31 @@ async function getSnapshot (houseSlug, cameraSlug, camera) {
   return snapshotsCache[slug]
 }
 
-module.exports = { getSnapshot }
+module.exports = function snapshotsMiddleware (webServer) {
+  webServer.post('/snapshot/', async transaction => {
+    const { houseSlug, cameraSlug } = transaction.body
+  
+    if (!availableHouseSlugs.includes(houseSlug) || !transaction.houses[houseSlug]) {
+      return transaction.json({ error: 'You are not member of this house.' }, 403)
+    }
+    
+    const house = config.houses[houseSlug]
+    
+    if (!Object.keys(house.cameras).includes(cameraSlug)) {
+      return transaction.json({ error: 'This camera doesnt exist in this house.' }, 404)
+    }
+  
+    const camera = house.cameras[cameraSlug]
+  
+    const snapshot = await getSnapshot(houseSlug, cameraSlug, camera)
+  
+    if (!snapshot) {
+      return transaction.json({ error: 'Camera is not available.' }, 503)
+    }
+  
+    transaction.response.writeHead(200, { 'Content-Type': 'image/jpeg' })
+    transaction.response.end(snapshot)
+  
+    return true
+  })
+}
