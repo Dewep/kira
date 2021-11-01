@@ -26,7 +26,7 @@
           <template v-if="house.isAdmin">
             <p class="house-logs" @click.prevent="invitation.opened = !invitation.opened">
               Last access:
-              <span v-for="(log, logIndex) in house.logs" :key="logIndex"><template v-if="logIndex">, </template>{{ log.user }} ({{ log.date }})</span>
+              <span v-for="(log, logIndex) in house.logs" :key="logIndex"><template v-if="logIndex">, </template>{{ log.name }} ({{ log.date }})</span>
             </p>
             <div v-if="invitation.opened" class="invitation-house">
               New invitation:

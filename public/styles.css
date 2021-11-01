@@ -143,6 +143,14 @@ button:hover {
   cursor: pointer;
 }
 
+.house-logs {
+  font-family: Verdana;
+  font-size: 10px;
+  opacity: .5;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
 /* @media screen and (max-width: 840px) {
   html {
     font-size: 20px;
