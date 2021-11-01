@@ -215,8 +215,8 @@ webServer.get('/styles.css', staticFile('styles.css', 'text/css'))
 webServer.get('/vue-3.2.20.global.prod.js', staticFile('vue-3.2.20.global.prod.js', 'text/javascript'))
 
 webServer.middleware(async function (transaction) {
-  transaction.response.writeHead(301, { 'Content-Type': 'text/plain', 'Location': '/' })
-  transaction.response.end('Page not found', 'utf-8')
+  transaction.response.writeHead(404, { 'Content-Type': 'text/html' })
+  transaction.response.end('<meta http-equiv="refresh" content="0; URL=/" /><h1>Page not found</h1>', 'utf-8')
   return true
 })
 
