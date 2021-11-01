@@ -57,7 +57,7 @@ webServer.middleware(async function (transaction) {
       if (house.logs.length >= 20) {
         house.logs.pop()
       }
-      house.logs.push({ from: now, to: now, name })
+      house.logs.unshift({ from: now, to: now, name })
     }
 
     allUsers.push(houseSlug + '/' + name)

@@ -10,7 +10,7 @@ module.exports = {
         salon: {
           name: 'Salon',
           type: 'esp32-cam-tasmota',
-          snapshot: 'http://127.0.0.1:4181/snapshot.jpg'
+          host: 'http://127.0.0.1:4181'
         }
       }
     }
