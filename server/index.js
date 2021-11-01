@@ -214,4 +214,10 @@ webServer.get('/favicon.ico', staticFile('favicon.ico', 'image/x-icon'))
 webServer.get('/styles.css', staticFile('styles.css', 'text/css'))
 webServer.get('/vue-3.2.20.global.prod.js', staticFile('vue-3.2.20.global.prod.js', 'text/javascript'))
 
+webServer.middleware(async function (transaction) {
+  transaction.response.writeHead(301, { 'Content-Type': 'text/plain', 'Location': '/' })
+  transaction.response.end('Page not found', 'utf-8')
+  return true
+})
+
 webServer.listen(4180)
