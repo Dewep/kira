@@ -30,8 +30,11 @@ h2 {
 }
 
 img {
-  width: 100%;
+  max-width: 100%;
   border-radius: 5px;
+  max-height: calc(100vh - 40px);
+  display: block;
+  margin: 0 auto;
 }
 a {
   cursor: pointer;
@@ -134,6 +137,10 @@ button:hover {
 }
 .join-house button {
   border-radius: 0 6px 6px 0;
+}
+
+.active-camera {
+  cursor: pointer;
 }
 
 /* @media screen and (max-width: 840px) {

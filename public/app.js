@@ -8,7 +8,11 @@ window.AppDefinition = {
         expiration: 10,
         code: ''
       },
-      houses: []
+      houses: [],
+      snapshotInterval: null,
+      activeCamera: null,
+      snapshots: {},
+      snapshotsRunning: {}
     }
   },
 
@@ -25,12 +29,23 @@ window.AppDefinition = {
 
   methods: {
     async load () {
+      if (this.snapshotInterval) {
+        clearInterval(this.snapshotInterval)
+        this.snapshotInterval = null
+      }
+
       this.houses = []
+
       try {
         const response = await this.auth()
         window.localStorage.authorization = response.authorization
         this.houses = response.houses
-      } catch (err) {
+
+        this.refreshSnapshots()
+        this.snapshotInterval = setInterval(() => {
+          this.refreshSnapshots()
+        }, 500)
+        } catch (err) {
         console.error(err)
       }
     },
@@ -52,6 +67,45 @@ window.AppDefinition = {
       this.invitation.name = ''
       this.invitation.code = response.code
       this.invitation.opened = false
+    },
+
+    async refreshSnapshots () {
+      for (const house of this.houses) {
+        for (const camera of house.cameras) {
+          this.refreshSnapshot(house, camera)
+        }
+      }
+    },
+
+    async refreshSnapshot (house, camera) {
+      const slug = house.slug + '.' + camera.slug
+
+      if (this.snapshots[slug] && this.activeCamera !== slug) {
+        return
+      }
+
+      if (this.snapshotsRunning[slug]) {
+        return
+      }
+      this.snapshotsRunning[slug] = true
+
+      try {
+        const response = await this.request('/snapshot/', {
+          houseSlug: house.slug,
+          cameraSlug: camera.slug
+        }, false)
+        const blob = await response.blob()
+  
+        const objectUrl = window.URL.createObjectURL(blob)
+        if (this.snapshots[slug]) {
+          window.URL.revokeObjectURL(this.snapshots[slug])
+        }
+        this.snapshots[slug] = objectUrl
+      } catch (err) {
+        console.warn('Download snapshot error', err)
+      }
+
+      this.snapshotsRunning[slug] = false
     },
 
     async request (path, body, json = true) {

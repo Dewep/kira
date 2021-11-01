@@ -11,13 +11,16 @@
   </head>
   <body class="initializing">
     <div id="app">
-      <div class="houses">
+      <div v-if="activeCamera" class="active-camera" @click.prevent="activeCamera = null">
+        <img :src="snapshots[activeCamera] || 'offline.png'">
+      </div>
+      <div v-if="!activeCamera" class="houses">
         <div v-for="house in houses" :key="house.slug" class="house">
           <h2>{{ house.name }}</h2>
           <div class="house-cameras">
-            <a v-for="cam in house.cameras" :key="cam.slug" class="house-camera">
+            <a v-for="cam in house.cameras" :key="cam.slug" class="house-camera" @click.prevent="activeCamera = house.slug + '.' + cam.slug">
               <h3>{{ cam.name }}</h3>
-              <img src="offline.png">
+              <img :src="snapshots[house.slug + '.' + cam.slug] || 'offline.png'">
             </a>
           </div>
           <template v-if="house.isAdmin">
@@ -40,7 +43,7 @@
           </template>
         </div>
       </div>
-      <div class="join-house">
+      <div v-if="!activeCamera" class="join-house">
         <h2>Join new house</h2>
         <input v-model="code" type="text" placeholder="House invitation code">
         <button @click.prevent="load()">Join</button>
