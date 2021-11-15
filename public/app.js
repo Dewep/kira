@@ -45,7 +45,7 @@ window.AppDefinition = {
         this.snapshotInterval = setInterval(() => {
           this.refreshSnapshots()
         }, 500)
-        } catch (err) {
+      } catch (err) {
         console.error(err)
       }
     },
@@ -126,6 +126,8 @@ window.AppDefinition = {
         }
         delete this.snapshots[slug]
       }
+
+      await setTimeout(resolve => setTimeout(resolve, 200))
 
       this.snapshotsRunning[slug] = false
     },
