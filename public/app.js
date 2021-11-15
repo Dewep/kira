@@ -121,6 +121,10 @@ window.AppDefinition = {
         this.snapshots[slug] = objectUrl
       } catch (err) {
         console.warn('Download snapshot error', err)
+        if (this.snapshots[slug]) {
+          window.URL.revokeObjectURL(this.snapshots[slug])
+        }
+        delete this.snapshots[slug]
       }
 
       this.snapshotsRunning[slug] = false
