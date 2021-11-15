@@ -35,6 +35,7 @@
               <div class="show-mobile"></div>
               <button class="select first" :class="{ selected: invitation.expiration === 10 }" @click.prevent="invitation.expiration = 10">10 min</button>
               <button class="select" :class="{ selected: invitation.expiration === 60 }" @click.prevent="invitation.expiration = 60">1 hour</button>
+              <button class="select" :class="{ selected: invitation.expiration === 360 }" @click.prevent="invitation.expiration = 360">6 hours</button>
               <button class="select" :class="{ selected: invitation.expiration === 720 }" @click.prevent="invitation.expiration = 720">12 hours</button>
               <button class="select last" :class="{ selected: invitation.expiration === 1440 }" @click.prevent="invitation.expiration = 1440">1 day</button>
               <div class="show-mobile"></div>

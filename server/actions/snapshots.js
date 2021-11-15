@@ -6,17 +6,33 @@ const snapshotsCache = {}
 
 async function _get (url) {
   return new Promise(resolve => {
-    http.get(url, { timeout: 1000 }, response => {
+    let timer = null
+    const resolveWrapper = data => {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+        resolve(data)
+      }
+    }
+    const request = http.get(url, { timeout: 1000 }, response => {
       const chunks = []
       response.on('data', chunk => {
         chunks.push(chunk)
       })
       response.on('end', () => {
-        resolve(Buffer.concat(chunks))
+        resolveWrapper(Buffer.concat(chunks))
       })
-    }).on('error', err => {
-      resolve(null)
     })
+    request.on('timeout', () => {
+      request.destroy()
+    })
+    request.on('error', err => {
+      resolveWrapper(null)
+    })
+    timer = setTimeout(() => {
+      request.destroy()
+      resolveWrapper(null)
+    }, 2000)
   })
 }
 

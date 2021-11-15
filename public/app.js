@@ -109,6 +109,10 @@ window.AppDefinition = {
           cameraSlug: camera.slug
         }, false)
         const blob = await response.blob()
+
+        if (blob.size < 1000) {
+          throw new Error('Bad blob size')
+        }
   
         const objectUrl = window.URL.createObjectURL(blob)
         if (this.snapshots[slug]) {

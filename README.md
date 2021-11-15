@@ -12,7 +12,6 @@ Camera
 - Tasmota commands
   - https://cgomesu.com/blog/Esp32cam-tasmota-webcam-server/
   - Set correct template
-  - WsStream 0
   - WsResolution 12
 - Snapshot image
   - http://192.168.X.Y/snapshot.jpg
